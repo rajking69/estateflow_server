@@ -17,4 +17,9 @@ router.post(
   AuthController.loginUser
 );
 
+router.post(
+  '/google-login',
+  AuthController.loginWithGoogle
+);
+
 export const AuthRoutes = router;

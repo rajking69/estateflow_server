@@ -14,4 +14,5 @@ export default {
     expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
   },
   better_auth_secret: process.env.BETTER_AUTH_SECRET,
+  google_client_id: process.env.GOOGLE_CLIENT_ID,
 };

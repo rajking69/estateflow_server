@@ -15,7 +15,7 @@ const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+const getAllUsers = catchAsync(async (_req: Request, res: Response) => {
   const result = await UserService.getAllUsersFromDB();
 
   sendResponse(res, {
@@ -29,7 +29,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 const updateUserRole = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { role } = req.body;
-  const result = await UserService.updateUserRoleInDB(id, role);
+  const result = await UserService.updateUserRoleInDB(id as string, role);
 
   sendResponse(res, {
     statusCode: 200,
@@ -41,7 +41,7 @@ const updateUserRole = catchAsync(async (req: Request, res: Response) => {
 
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await UserService.deleteUserFromDB(id);
+  const result = await UserService.deleteUserFromDB(id as string);
 
   sendResponse(res, {
     statusCode: 200,
@@ -51,7 +51,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getPlatformStats = catchAsync(async (req: Request, res: Response) => {
+const getPlatformStats = catchAsync(async (_req: Request, res: Response) => {
   const result = await UserService.getPlatformStatsFromDB();
 
   sendResponse(res, {

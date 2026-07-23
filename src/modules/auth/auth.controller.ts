@@ -35,7 +35,29 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const loginWithGoogle = catchAsync(async (req: Request, res: Response) => {
+  const { user, accessToken } = await AuthService.loginWithGoogle(req.body);
+
+  // Set HTTP-only Cookie for security
+  res.cookie('accessToken', accessToken, {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'none',
+  });
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User logged in successfully with Google',
+    data: {
+      user,
+      accessToken,
+    },
+  });
+});
+
 export const AuthController = {
   registerUser,
   loginUser,
+  loginWithGoogle,
 };

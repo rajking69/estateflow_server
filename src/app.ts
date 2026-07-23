@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Welcome Route
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.status(200).json({
     success: true,
     message: 'Welcome to the EstateFlow Server API!',

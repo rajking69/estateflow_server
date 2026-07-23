@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import config from './index';
+import { IUser } from '../modules/user/user.interface';
 
 export const connectDB = async (): Promise<void> => {
   try {
@@ -40,16 +41,27 @@ const seedDemoUsers = async () => {
   try {
     const { User } = await import('../modules/user/user.model');
     
-    // Purge old demo buyer and broker accounts
+    // Purge old buyer/broker to avoid duplicates and ensure role schema matching
     await User.deleteMany({ email: { $in: ['buyer@estateflow.com', 'broker@estateflow.com'] } });
-    console.log('[Seed] Purged old buyer and broker demo accounts from MongoDB');
 
-    const usersToSeed = [
+    const usersToSeed: IUser[] = [
       {
         name: 'Admin',
         email: 'admin@estateflow.com',
         password: 'Admin@123',
         role: 'admin',
+      },
+      {
+        name: 'Broker',
+        email: 'broker@estateflow.com',
+        password: 'Broker@123',
+        role: 'seller',
+      },
+      {
+        name: 'Buyer',
+        email: 'buyer@estateflow.com',
+        password: 'Buyer@123',
+        role: 'buyer',
       },
     ];
 
@@ -57,13 +69,13 @@ const seedDemoUsers = async () => {
       const userExists = await User.findOne({ email: userData.email });
       if (!userExists) {
         await User.create(userData);
-        console.log(`[Seed] Created demo user: ${userData.email}`);
-      } else if (userData.role === 'admin') {
-        // Enforce update to Admin@123 password and Admin name if already seeded
+        console.log(`[Seed] Created user: ${userData.email}`);
+      } else {
+        // Enforce update to default verification passwords
         userExists.name = userData.name;
         userExists.password = userData.password;
         await userExists.save();
-        console.log(`[Seed] Updated admin properties verification: ${userData.email}`);
+        console.log(`[Seed] Updated user properties verification: ${userData.email}`);
       }
     }
   } catch (err) {
